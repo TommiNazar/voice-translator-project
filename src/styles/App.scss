@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f4f4;
+  color: #333;
+}
+
+.recorder-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+button:hover {
+  background: #005fa3;
+}
+
+.section {
+  margin-top: 1.5rem;
+}
+
+audio {
+  margin-top: 0.5rem;
+  width: 100%;
+}
