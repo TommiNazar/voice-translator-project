@@ -30,7 +30,8 @@ const Recorder = () => {
         formData.append("target_language", "en");
 
         try {
-          const response = await fetch("http://localhost:8000/translate", {
+          const response = await fetch("https://voice-translator-backend-1n3i.onrender.com/translate", {
+
             method: "POST",
             body: formData,
           });
