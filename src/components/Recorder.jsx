@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import Header from "./Header";
+import LanguageSelector from "./LanguageSelector";
 
 const Recorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -8,6 +10,7 @@ const Recorder = () => {
   const [transcription, setTranscription] = useState(null);
   const [translation, setTranslation] = useState(null);
   const [recordingSeconds, setRecordingSeconds] = useState(0);
+  const [targetLanguage, setTargetLanguage] = useState("en");
   const timerRef = useRef(null);
 
   const startRecording = async () => {
@@ -26,15 +29,19 @@ const Recorder = () => {
         setRecordedAudioURL(audioURL);
 
         const formData = new FormData();
-        formData.append("audio", audioBlob);
-        formData.append("target_language", "en");
+        formData.append("file", audioBlob, "recording.webm");
+        formData.append("target_lang", targetLanguage);
 
         try {
-          const response = await fetch("https://voice-translator-backend-8ruw.onrender.com", {
-
+          const response = await fetch("https://voice-translator-backend-8ruw.onrender.com/translate", {
             method: "POST",
             body: formData,
           });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Translation failed");
+          }
 
           const data = await response.json();
           setTranscription(data.transcription);
@@ -43,7 +50,7 @@ const Recorder = () => {
         } catch (err) {
           console.error("Error al traducir:", err);
           setTranscription("No se pudo transcribir.");
-          setTranslation("No se pudo traducir.");
+          setTranslation(`Error: ${err.message}`);
         }
       };
 
@@ -69,8 +76,11 @@ const Recorder = () => {
 
   return (
     <div className="recorder-container">
-      <h1>🎙 Traductor de Voz</h1>
-      <p>Idioma de destino: <strong>Inglés</strong></p>
+      <Header />
+      <LanguageSelector
+        selectedLang={targetLanguage}
+        onChange={setTargetLanguage}
+      />
 
       <button onClick={isRecording ? stopRecording : startRecording}>
         {isRecording ? "⏹ Detener" : "🎤 Empezar"}
